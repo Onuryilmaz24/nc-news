@@ -20,6 +20,7 @@ export const HomeArticles = () => {
   };
 
   useEffect(() => {
+    updateArticlesToShow();
     getAllArticles(articlesToShow, 1)
       .then((data) => {
         setArticles(data);
@@ -31,7 +32,7 @@ export const HomeArticles = () => {
     window.addEventListener("resize", updateArticlesToShow);
 
     return () => window.removeEventListener("resize", updateArticlesToShow);
-  }, [articlesToShow]);
+  }, []);
 
   return (
     <div className="flex justify-center">
