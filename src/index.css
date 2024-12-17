@@ -20,7 +20,9 @@
     @apply flex flex-wrap justify-start gap-4 ml-2 flex-grow
   }
 
-
+  .single-article-box {
+    @apply w-full mx-8 border-2 
+  }
 
 
 }

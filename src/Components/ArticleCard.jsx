@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
+
 export const ArticleCard = ({ article }) => {
   return (
-    <div className="article-cards">
+    <Link to={`/articles/${article.article_id}`} className="article-cards">
       <img
         src={article.article_img_url}
         alt="article-image"
@@ -20,6 +22,6 @@ export const ArticleCard = ({ article }) => {
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
