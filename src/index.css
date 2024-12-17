@@ -21,7 +21,11 @@
   }
 
   .single-article-box {
-    @apply w-full mx-8 border-2 
+    @apply w-full mx-8 border-2 shadow-md
+  }
+
+  .vote-button{
+    @apply border-2 w-14 bg-gray-400 border-black hover:scale-105 hover:bg-white hover:text-black
   }
 
 
