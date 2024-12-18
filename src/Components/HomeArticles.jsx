@@ -45,9 +45,9 @@ export const HomeArticles = () => {
             return <ArticleCard article={article} key={article.article_id} />;
           })}
           <Link to={"/articles"}>
-              <button className="border-2 text-2xl text-center items-center w-[200px] shadow-md text-white rounded-full hover:scale-110 ease-in duration-200">
-                Explore More
-              </button>
+            <button className="border-2 text-2xl text-center items-center w-[200px] shadow-md text-white rounded-full hover:scale-110 ease-in duration-200">
+              Explore More
+            </button>
           </Link>
         </div>
       </div>
