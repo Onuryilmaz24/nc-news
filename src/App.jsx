@@ -8,6 +8,8 @@ import { AllArticles } from './Components/AllArticles'
 import { SingleArticle } from './Components/SingleArticle'
 import { LogInPage } from './Components/LogInPage'
 import { UserPage } from './Components/UserPage'
+import { ArticlesByTopic }from './Components/ArticlesByTopic'
+import { TopicsPage }from './Components/TopicsPage'
 
 function App() {
 
@@ -20,6 +22,8 @@ function App() {
         <Route path='/articles/:article_id' element={<SingleArticle/>}/>
         <Route path='/login' element={<LogInPage/>}/>
         <Route path='/:username/userpage' element={<UserPage/>}/>
+        <Route path='/topics' element={<TopicsPage/>}/>
+        <Route path='/topics/:slug' element={<ArticlesByTopic/>} />
       </Routes>
       <Footer />
     </>

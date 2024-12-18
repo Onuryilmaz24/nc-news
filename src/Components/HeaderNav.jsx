@@ -2,9 +2,15 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../Contexts/UserContext";
 import { FaRegUser } from "react-icons/fa";
+import { CiLogout } from "react-icons/ci";
 
 export const HeaderNav = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  const handleClick = () => {
+    setUser({ username: "", name: "", avatar_url: "" });
+    localStorage.removeItem("user");
+  };
 
   return (
     <>
@@ -18,9 +24,12 @@ export const HeaderNav = () => {
         </Link>
         {/* Topics Articles */}
         <div className="flex gap-4 items-center justify-center">
-          <div className="flex items-center justify-center shadow-md px-2 hover:scale-105 ease-in duration-300">
+          <Link
+            to={"/topics"}
+            className="flex items-center justify-center shadow-md px-2 hover:scale-105 ease-in duration-300"
+          >
             <p className="font-extrabold text-2xl text-white">Topics</p>
-          </div>
+          </Link>
           <Link
             to={"/articles"}
             className="flex items-center justify-center shadow-md px-2 hover:scale-105 ease-in duration-300"
@@ -31,18 +40,28 @@ export const HeaderNav = () => {
         {/* UserPage LogIn / Sign Up */}
         <div className="flex gap-8 mr-8">
           {user.username ? (
-            <Link
-              to={user.username ? `/${user.username}/userpage` : "/login"}
-              className="flex items-center justify-center shadow-md px-2 hover:scale-105 ease-in duration-300"
-            > 
-             <FaRegUser className="text-white border mr-3 rounded-full size-8"/>
-              <p className="font-extrabold text-2xl text-white">
-                {user.username}
-              </p>
-            </Link>
+            <>
+              <Link
+                to={user.username ? `/${user.username}/userpage` : "/login"}
+                className="flex items-center justify-center shadow-md px-2 hover:scale-105 ease-in duration-300"
+              >
+                <FaRegUser className="text-white border mr-3 rounded-full size-8" />
+                <p className="font-extrabold text-2xl text-white">
+                  {user.username}
+                </p>
+              </Link>
+              <Link
+                to={"/"}
+                className="flex items-center justify-center shadow-md px-2 hover:scale-105 ease-in duration-300"
+                onClick={handleClick}
+              >
+                <CiLogout className="text-white border mr-3 rounded-full size-8" />
+                <p className="font-extrabold text-2xl text-white">Log Out</p>
+              </Link>
+            </>
           ) : (
             <Link
-              to={user.username ? `/${user.username}/userpage `: "/login"}
+              to={user.username ? `/${user.username}/userpage ` : "/login"}
               className="flex items-center justify-center shadow-md px-2 hover:scale-105 ease-in duration-300"
             >
               <p className="font-extrabold text-2xl text-white">
@@ -54,4 +73,4 @@ export const HeaderNav = () => {
       </div>
     </>
   );
-}
+};

@@ -1,13 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { getUserInformation } from "./api";
+import { getAllUsers, getUserInformation } from "./api";
 import { UserContext } from "../Contexts/UserContext";
 
 export const LogInPage = () => {
   const { user, setUser } = useContext(UserContext);
 
   const [username, setUserName] = useState("");
+
+  const [users,setUsers] = useState([])
 
   const [loading, setLoading] = useState(false);
 
@@ -17,12 +19,20 @@ export const LogInPage = () => {
     setUserName(e.target.value);
   };
 
+  useEffect(()=>{
+    getAllUsers().then((data)=>[
+      setUsers(data)
+    ])
+  },[])
+
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     getUserInformation(username).then((data) => {
       setUser(data);
-      navigate(`/${data.username}/userpage`);
+      navigate(`/`);
     });
   };
 
@@ -40,15 +50,19 @@ export const LogInPage = () => {
                 <label className="">
                   Username
                   <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={username}
-                    onChange={handleChange}
-                    required
-                    className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  list="users"
+                  name="user"
+                  value={username}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
+                <datalist id="users">
+                  {
+                    users.map((user) => <option value={user.username}></option>)
+                  }
+                </datalist>
               </div>
               <button
                 type="submit"

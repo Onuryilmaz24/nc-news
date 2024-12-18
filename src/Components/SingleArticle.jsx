@@ -34,31 +34,41 @@ export const SingleArticle = () => {
   const navigate = useNavigate();
 
   const handleUpVote = () => {
-    const body = {
-      inc_vote: 1,
-    };
+    if (!user.username) {
+      alert("Please Login In Order To Vote");
+      navigate("/login");
+    } else {
+      const body = {
+        inc_vote: 1,
+      };
 
-    if (!hasUpVoted) {
-      updateArticleVote(article_id, body).then(() => {
-        getSingleArticle(article_id).then((data) => {
-          setArticle(data);
-          setHasUpVoted(true);
+      if (!hasUpVoted) {
+        updateArticleVote(article_id, body).then(() => {
+          getSingleArticle(article_id).then((data) => {
+            setArticle(data);
+            setHasUpVoted(true);
+          });
         });
-      });
+      }
     }
   };
   const handleDownVote = () => {
-    const body = {
-      inc_vote: -1,
-    };
+    if (!user.username) {
+      alert("Please Login In Order To Vote");
+      navigate("/login");
+    } else {
+      const body = {
+        inc_vote: -1,
+      };
 
-    if (!hasDownVoted) {
-      updateArticleVote(article_id, body).then(() => {
-        getSingleArticle(article_id).then((data) => {
-          setArticle(data);
-          setHasDownVoted(true);
+      if (!hasDownVoted) {
+        updateArticleVote(article_id, body).then(() => {
+          getSingleArticle(article_id).then((data) => {
+            setArticle(data);
+            setHasDownVoted(true);
+          });
         });
-      });
+      }
     }
   };
 
@@ -71,8 +81,6 @@ export const SingleArticle = () => {
       )
     );
   };
-
- 
 
   useEffect(() => {
     setLoading(true);
@@ -95,17 +103,21 @@ export const SingleArticle = () => {
     if (!user.username) {
       alert("Please Log In");
       navigate("/login");
+    } else if (comment.body.trim().length === 0) {
+      alert("Comment can not be empty");
     } else {
       postNewComment(article.article_id, comment).then((newComment) => {
         setComments((prevComments) => {
           return [newComment, ...prevComments];
-        });
+        })
 
         setComment({
           username: user.username,
           body: "",
         });
-      });
+      }).catch((error)=>{
+        alert("failed to post")
+      })
     }
   };
 
@@ -116,13 +128,13 @@ export const SingleArticle = () => {
   };
 
   const handleDeleteComment = (comment_id) => {
-    deleteComment(comment_id)
-        alert("Your comment has been deleted from article !!")
-        setComments((prevComments) => {
-            return prevComments.filter(
-              (comment) => comment.comment_id !== comment_id
-            );
-          })
+    deleteComment(comment_id);
+    alert("Your comment has been deleted from article !!");
+    setComments((prevComments) => {
+      return prevComments.filter(
+        (comment) => comment.comment_id !== comment_id
+      );
+    });
   };
 
   return (
@@ -175,6 +187,36 @@ export const SingleArticle = () => {
         </div>
       )}
 
+      {user.username ? (
+        <div className="flex justify-center border-2 w-full mx-8 mt-5">
+          <label className="w-full flex justify-center shadow-md">
+            <form
+              className="w-full max-w-3xl p-4 "
+              onSubmit={handleSubmit}
+              name="add-comment"
+            >
+              <label className="block text-xl font-semibold mb-2">
+                Your Comment
+              </label>
+              <textarea
+                className="border-2 border-black w-full h-[150px] p-2 resize-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Write your comment here..."
+                onChange={handleChange}
+                value={comment.body}
+              />
+              <div className="flex justify-end mt-4">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </label>
+        </div>
+      ) : null}
+
       {loading ? (
         <AiOutlineLoading3Quarters className="animate-spin text-6xl text-blue-500 mx-auto flex flex-col justify-center items-center min-h-[80vh]" />
       ) : (
@@ -196,30 +238,6 @@ export const SingleArticle = () => {
           })}
         </div>
       )}
-
-      {
-        <div className="flex justify-center border-2 w-full mx-8 mt-5">
-          <form className="w-full max-w-3xl p-4" onSubmit={handleSubmit}>
-            <label className="block text-xl font-semibold mb-2">
-              Add Comment
-            </label>
-            <textarea
-              className="border-2 border-black w-full h-[150px] p-2 resize-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Write your comment here..."
-              onChange={handleChange}
-              value={comment.body}
-            />
-            <div className="flex justify-end mt-4">
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      }
     </>
   );
 };

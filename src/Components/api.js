@@ -5,11 +5,12 @@ const newsApi = axios.create({
     baseURL: "https://nc-news-project-w66a.onrender.com/api"
 })
 
-export const getAllArticles = (limit,page) => {
+export const getAllArticles = (limit,page,slug) => {
     return newsApi.get(`/articles`,{
         params:{
             limit: limit,
-            p:page
+            p:page,
+            topic:slug
         }
     }).then(({data})=>{
         return data.articles
@@ -51,5 +52,17 @@ export const postNewComment = (article_id,body) => {
 export const deleteComment = (comment_id) => {
     return newsApi.delete(`/comments/${comment_id}`).then(({data})=>{
         return data
+    })
+}
+
+export const getAllTopics = () => {
+    return newsApi.get(`/topics`).then(({data})=>{
+        return data.topics
+    })
+}
+
+export const getAllUsers = () => {
+    return newsApi.get(`/users`).then(({data})=>{
+        return data.users
     })
 }
