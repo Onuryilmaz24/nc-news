@@ -10,6 +10,7 @@ import {
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CommentCard } from "./CommentCard";
 import { UserContext } from "../Contexts/UserContext";
+import { formatter } from "../utils/dateFormat";
 
 export const SingleArticle = () => {
   const [article, setArticle] = useState({});
@@ -30,6 +31,8 @@ export const SingleArticle = () => {
   const [hasUpVoted, setHasUpVoted] = useState(false);
 
   const [hasDownVoted, setHasDownVoted] = useState(false);
+
+  const [order,setOrder] = useState("DESC")
 
   const navigate = useNavigate();
 
@@ -91,12 +94,12 @@ export const SingleArticle = () => {
       })
       .then(() => {
         setLoading(true);
-        getCommentsOfSingleArticle(article_id).then((data) => {
+        getCommentsOfSingleArticle(article_id,order).then((data) => {
           setComments(data);
           setLoading(false);
         });
       });
-  }, [article_id]);
+  }, [article_id,order]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -136,6 +139,10 @@ export const SingleArticle = () => {
       );
     });
   };
+
+  const handleChangeOrder = (e) => {
+    setOrder(e.target.value)
+  }
 
   return (
     <>
@@ -177,7 +184,7 @@ export const SingleArticle = () => {
                 <hr className="border-black border-1 w-[125px] mb-3 " />
               </div>
               <div className="text-start ml-2 italic">
-                <p>{new Date(article.created_at).toLocaleDateString()}</p>
+                <p>{article.created_at ? formatter.format(new Date(article.created_at)) : "Date not available"}</p>
               </div>
               <div className="text-start ml-2 mt-2 mb-2">
                 <p>{article.body}</p>
@@ -225,6 +232,26 @@ export const SingleArticle = () => {
             <h1 className="text-2xl italic font-bold ml-10 mb-5 mt-2">
               Comments
             </h1>
+            <div className="flex mb-4">
+              <label>
+                Display
+                <form id="order-sort">
+                  <label className="" id="order">
+                    Order :
+                    <select
+                      id="sort-queries"
+                      className="ml-4 mr-5"
+                      onChange={handleChangeOrder}
+                      value={order}
+                    >
+                      <option value="DESC">Newest(default)</option>
+                      <option value="ASC">Oldest</option>
+                    </select>
+                  </label>
+                </form>
+              </label>
+            </div>
+
           </div>
           {comments.map((comment) => {
             return (
