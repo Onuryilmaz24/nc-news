@@ -40,8 +40,6 @@ export const AllArticles = () => {
     });
   }, [page]);
 
-  console.log(page)
-
   return (
     <>
       {loading ? (
