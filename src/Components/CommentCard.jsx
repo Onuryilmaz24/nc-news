@@ -1,7 +1,8 @@
 import { useContext, useState } from "react";
-import { deleteComment, updateCommentsVote } from "./api";
+import { updateCommentsVote } from "./api";
 import { UserContext } from "../Contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { formatter } from "../utils/dateFormat";
 
 export const CommentCard = ({ comment, voteUpdater, handleDeleteComment }) => {
   const [hasUpVoted, setHasUpVoted] = useState(false);
@@ -10,7 +11,7 @@ export const CommentCard = ({ comment, voteUpdater, handleDeleteComment }) => {
 
   
 
-  const formattedDate = new Date(comment.created_at).toLocaleDateString();
+  const formattedDate = formatter.format(new Date(comment.created_at));
 
   const { user } = useContext(UserContext);
 
@@ -59,7 +60,7 @@ export const CommentCard = ({ comment, voteUpdater, handleDeleteComment }) => {
     <div className="bg-gray-100 mx-20 border border-gray-300 rounded-lg p-4 mb-4 shadow-md">
       <div className="flex justify-between font-semibold text-gray-700 mb-2">
         <span>{comment.body}</span>
-        <span className="text-sm text-gray-500">{formattedDate}</span>
+        <span className="text-xs text-gray-500">{formattedDate}</span>
       </div>
       <div className="text-gray-800 mb-2">
         <p>{comment.body}</p>

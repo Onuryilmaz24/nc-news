@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { formatter } from "../utils/dateFormat";
 
 export const ArticleCard = ({ article }) => {
   return (
@@ -18,7 +19,7 @@ export const ArticleCard = ({ article }) => {
         <div className="text-right mb-3">
           <p className="text-xs text-gray-600">By: {article.author}</p>
           <p className="text-xs text-gray-500">
-            {new Date(article.created_at).toLocaleDateString()}
+            {formatter.format(new Date(article.created_at))}
           </p>
         </div>
       </div>

@@ -5,12 +5,14 @@ const newsApi = axios.create({
     baseURL: "https://nc-news-project-w66a.onrender.com/api"
 })
 
-export const getAllArticles = (limit,page,slug) => {
+export const getAllArticles = (limit,page,slug,sort,order) => {
     return newsApi.get(`/articles`,{
         params:{
             limit: limit,
             p:page,
-            topic:slug
+            topic:slug,
+            sort_by:sort,
+            order:order
         }
     }).then(({data})=>{
         return data.articles
@@ -23,8 +25,12 @@ export const getSingleArticle = (article_id) => {
     })
 }
 
-export const getCommentsOfSingleArticle = (article_id) => {
-    return newsApi.get(`/articles/${article_id}/comments`).then(({data})=>{
+export const getCommentsOfSingleArticle = (article_id,order) => {
+    return newsApi.get(`/articles/${article_id}/comments`,{
+        params:{
+            order:order
+        }
+    }).then(({data})=>{
         return data.comments
     })
 }
