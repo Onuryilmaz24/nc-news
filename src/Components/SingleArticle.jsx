@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
+  deleteComment,
   getCommentsOfSingleArticle,
   getSingleArticle,
   postNewComment,
@@ -29,6 +30,8 @@ export const SingleArticle = () => {
   const [hasUpVoted, setHasUpVoted] = useState(false);
 
   const [hasDownVoted, setHasDownVoted] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleUpVote = () => {
     const body = {
@@ -69,6 +72,8 @@ export const SingleArticle = () => {
     );
   };
 
+ 
+
   useEffect(() => {
     setLoading(true);
     getSingleArticle(article_id)
@@ -89,6 +94,7 @@ export const SingleArticle = () => {
     e.preventDefault();
     if (!user.username) {
       alert("Please Log In");
+      navigate("/login");
     } else {
       postNewComment(article.article_id, comment).then((newComment) => {
         setComments((prevComments) => {
@@ -107,6 +113,16 @@ export const SingleArticle = () => {
     setComment((prevComment) => {
       return { ...prevComment, body: e.target.value };
     });
+  };
+
+  const handleDeleteComment = (comment_id) => {
+    deleteComment(comment_id)
+        alert("Your comment has been deleted from article !!")
+        setComments((prevComments) => {
+            return prevComments.filter(
+              (comment) => comment.comment_id !== comment_id
+            );
+          })
   };
 
   return (
@@ -174,6 +190,7 @@ export const SingleArticle = () => {
                 comment={comment}
                 key={comment.comment_id}
                 voteUpdater={updateCommentVotesDisplay}
+                handleDeleteComment={handleDeleteComment}
               />
             );
           })}
