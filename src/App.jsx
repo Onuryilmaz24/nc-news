@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import { HeaderNav } from './Components/HeaderNav'
 import { Footer } from './Components/Footer'
-import { Route , Routes} from 'react-router-dom'
+import { Route , Routes , Navigate} from 'react-router-dom'
 import { HomePage } from './Components/HomePage'
 import { AllArticles } from './Components/AllArticles'
 import { SingleArticle } from './Components/SingleArticle'
@@ -24,6 +24,7 @@ function App() {
         <Route path='/:username/userpage' element={<UserPage/>}/>
         <Route path='/topics' element={<TopicsPage/>}/>
         <Route path='/topics/:slug' element={<ArticlesByTopic/>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
     </>
