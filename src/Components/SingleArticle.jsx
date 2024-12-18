@@ -1,17 +1,26 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   getCommentsOfSingleArticle,
   getSingleArticle,
+  postNewComment,
   updateArticleVote,
 } from "./api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CommentCard } from "./CommentCard";
+import { UserContext } from "../Contexts/UserContext";
 
 export const SingleArticle = () => {
   const [article, setArticle] = useState({});
 
   const [loading, setLoading] = useState(false);
+
+  const { user } = useContext(UserContext);
+
+  const [comment, setComment] = useState({
+    username: user.username,
+    body: "",
+  });
 
   const [comments, setComments] = useState([]);
 
@@ -52,7 +61,7 @@ export const SingleArticle = () => {
 
   const updateCommentVotesDisplay = (comment_id, inc_vote) => {
     setComments((prevComments) =>
-        prevComments.map((comment) =>
+      prevComments.map((comment) =>
         comment.comment_id === comment_id
           ? { ...comment, votes: comment.votes + inc_vote }
           : comment
@@ -75,6 +84,30 @@ export const SingleArticle = () => {
         });
       });
   }, [article_id]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!user.username) {
+      alert("Please Log In");
+    } else {
+      postNewComment(article.article_id, comment).then((newComment) => {
+        setComments((prevComments) => {
+          return [newComment, ...prevComments];
+        });
+
+        setComment({
+          username: user.username,
+          body: "",
+        });
+      });
+    }
+  };
+
+  const handleChange = (e) => {
+    setComment((prevComment) => {
+      return { ...prevComment, body: e.target.value };
+    });
+  };
 
   return (
     <>
@@ -146,6 +179,30 @@ export const SingleArticle = () => {
           })}
         </div>
       )}
+
+      {
+        <div className="flex justify-center border-2 w-full mx-8 mt-5">
+          <form className="w-full max-w-3xl p-4" onSubmit={handleSubmit}>
+            <label className="block text-xl font-semibold mb-2">
+              Add Comment
+            </label>
+            <textarea
+              className="border-2 border-black w-full h-[150px] p-2 resize-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Write your comment here..."
+              onChange={handleChange}
+              value={comment.body}
+            />
+            <div className="flex justify-end mt-4">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      }
     </>
   );
 };
