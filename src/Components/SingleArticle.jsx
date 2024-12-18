@@ -32,7 +32,9 @@ export const SingleArticle = () => {
 
   const [hasDownVoted, setHasDownVoted] = useState(false);
 
-  const [order,setOrder] = useState("DESC")
+  const [order, setOrder] = useState("DESC");
+
+  const [commentPosted, setCommentPosted] = useState(false);
 
   const navigate = useNavigate();
 
@@ -94,34 +96,46 @@ export const SingleArticle = () => {
       })
       .then(() => {
         setLoading(true);
-        getCommentsOfSingleArticle(article_id,order).then((data) => {
+        getCommentsOfSingleArticle(article_id, order).then((data) => {
           setComments(data);
           setLoading(false);
         });
+      })
+      .catch((error) => {
+        alert("Article does not exist");
+        navigate("/articles");
       });
-  }, [article_id,order]);
+  }, [article_id, order]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!user.username) {
       alert("Please Log In");
       navigate("/login");
-    } else if (comment.body.trim().length === 0) {
+      return;
+    }
+    if (comment.body.trim().length === 0) {
       alert("Comment can not be empty");
-    } else {
-      postNewComment(article.article_id, comment).then((newComment) => {
+      return;
+    }
+    setCommentPosted(true);
+    postNewComment(article.article_id, comment)
+      .then((newComment) => {
+        
         setComments((prevComments) => {
           return [newComment, ...prevComments];
-        })
+        });
 
         setComment({
           username: user.username,
           body: "",
         });
-      }).catch((error)=>{
-        alert("failed to post")
       })
-    }
+      .catch((error) => {
+        alert("failed to post");
+      }).finally(()=>{
+        setCommentPosted(false)
+      })
   };
 
   const handleChange = (e) => {
@@ -141,8 +155,8 @@ export const SingleArticle = () => {
   };
 
   const handleChangeOrder = (e) => {
-    setOrder(e.target.value)
-  }
+    setOrder(e.target.value);
+  };
 
   return (
     <>
@@ -184,7 +198,11 @@ export const SingleArticle = () => {
                 <hr className="border-black border-1 w-[125px] mb-3 " />
               </div>
               <div className="text-start ml-2 italic">
-                <p>{article.created_at ? formatter.format(new Date(article.created_at)) : "Date not available"}</p>
+                <p>
+                  {article.created_at
+                    ? formatter.format(new Date(article.created_at))
+                    : "Date not available"}
+                </p>
               </div>
               <div className="text-start ml-2 mt-2 mb-2">
                 <p>{article.body}</p>
@@ -211,10 +229,12 @@ export const SingleArticle = () => {
                 onChange={handleChange}
                 value={comment.body}
               />
+
               <div className="flex justify-end mt-4">
                 <button
                   type="submit"
                   className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  disabled={commentPosted}
                 >
                   Submit
                 </button>
@@ -251,7 +271,6 @@ export const SingleArticle = () => {
                 </form>
               </label>
             </div>
-
           </div>
           {comments.map((comment) => {
             return (

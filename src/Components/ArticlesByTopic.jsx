@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllArticles } from "./api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ArticleCard } from "./ArticleCard";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const ArticlesByTopic = () => {
   const [topicArticles, setTopicsArticles] = useState([]);
@@ -16,6 +16,10 @@ export const ArticlesByTopic = () => {
   const [query, setQuery] = useState("created_at");
 
   const [order,setOrder] = useState("DESC")
+
+  const navigate = useNavigate();
+
+
 
   const handleNextClick = (e) => {
     e.preventDefault();
@@ -52,6 +56,9 @@ export const ArticlesByTopic = () => {
     getAllArticles(10,page,slug,query,order).then((data) => {
       setTopicsArticles(data);
       setLoading(false);
+    }).catch((error)=>{
+      alert(`${slug} topic Does Not Exist`)
+      navigate("/topics")
     });
   }, [page,query,order]);
 

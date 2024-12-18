@@ -27,7 +27,7 @@ export const TopicsPage = () => {
           setAllTopics(data);
         })
         .catch((error) => {
-          console.log("FetchError", error);
+          alert("FetchError");
         });
   
       window.addEventListener("resize", updateTopicsToShow);
