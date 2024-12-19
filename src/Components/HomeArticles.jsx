@@ -32,7 +32,7 @@ export const HomeArticles = () => {
     window.addEventListener("resize", updateArticlesToShow);
 
     return () => window.removeEventListener("resize", updateArticlesToShow);
-  }, []);
+  }, [articlesToShow]);
 
   return (
     <div className="flex justify-center">

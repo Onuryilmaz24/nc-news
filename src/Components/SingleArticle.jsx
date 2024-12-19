@@ -165,8 +165,8 @@ export const SingleArticle = () => {
       ) : (
         <div className="flex justify-center">
           <div className="single-article-box">
-            <div className="text-center">
-              <h1 className="text-3xl font-extrabold underline text-black">
+            <div className="text-center w-full">
+              <h1 className="text-3xl font-extrabold underline text-black ">
                 {article.title}
               </h1>
             </div>
@@ -213,7 +213,7 @@ export const SingleArticle = () => {
       )}
 
       {user.username ? (
-        <div className="flex justify-center border-2 w-full mx-8 mt-5">
+        <div className="flex justify-center border-2  mx-8 mt-5 h-auto">
           <label className="w-full flex justify-center shadow-md">
             <form
               className="w-full max-w-3xl p-4 "

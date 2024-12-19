@@ -105,32 +105,26 @@ export const ArticlesByTopic = () => {
               </label>
             </div>
             <div className="articles-container">
-              <div className="flex items-center justify-start gap-4 ml-2">
-                {topicArticles.slice(0, 5).map((article) => {
-                  return (
-                    <ArticleCard article={article} key={article.article_id} />
-                  );
-                })}
-                <button
-                  className="border-2 w-[150px] h-[100px] rounded-full hover:scale-110 ease-in duration-200 self-center text-white border-white"
-                  onClick={handlePreviousClick}
-                >
-                  Previous Page
-                </button>
+              <div className="flex flex-wrap items-center justify-center gap-4 ml-2">
+                {topicArticles.map((article) => (
+                  <ArticleCard article={article} key={article.article_id} />
+                ))}
               </div>
-              <div className="flex items-center justify-start gap-4 ml-2 mt-2">
-                {topicArticles.slice(5, 10).map((article) => {
-                  return (
-                    <ArticleCard article={article} key={article.article_id} />
-                  );
-                })}
-                <button
-                  className="border-2 w-[150px] h-[100px] rounded-full hover:scale-110 ease-in duration-200 self-center text-white border-white"
-                  onClick={handleNextClick}
-                >
-                  Next Page
-                </button>
-              </div>
+            </div>
+            <div className="flex justify-center mt-4">
+              <button
+                className="border-2 px-6 py-2 rounded-md hover:scale-110 ease-in duration-200 text-white border-white mx-2"
+                onClick={handlePreviousClick}
+                disabled={page === 1} // Disable button if on the first page
+              >
+                Previous Page
+              </button>
+              <button
+                className="border-2 px-6 py-2 rounded-md hover:scale-110 ease-in duration-200 text-white border-white mx-2"
+                onClick={handleNextClick}
+              >
+                Next Page
+              </button>
             </div>
           </div>
         </div>

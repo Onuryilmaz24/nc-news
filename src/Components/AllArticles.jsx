@@ -12,7 +12,7 @@ export const AllArticles = () => {
 
   const [query, setQuery] = useState("created_at");
 
-  const [order,setOrder] = useState("DESC")
+  const [order, setOrder] = useState("DESC");
 
   const handleNextClick = (e) => {
     e.preventDefault();
@@ -43,19 +43,13 @@ export const AllArticles = () => {
     setOrder(e.target.value);
   };
 
-
-
   useEffect(() => {
     setLoading(true);
-    getAllArticles(10,page,null,query,order).then((data) => {
+    getAllArticles(10, page, null, query, order).then((data) => {
       setAllArticles(data);
       setLoading(false);
     });
-  }, [page,query,order]);
-
- 
-
- 
+  }, [page, query, order]);
 
   return (
     <>
@@ -100,32 +94,26 @@ export const AllArticles = () => {
               </label>
             </div>
             <div className="articles-container">
-              <div className="flex items-center justify-start gap-4 ml-2">
-                {allArticles.slice(0, 5).map((article) => {
-                  return (
-                    <ArticleCard article={article} key={article.article_id} />
-                  );
-                })}
-                <button
-                  className="border-2 w-[150px] h-[100px] rounded-full hover:scale-110 ease-in duration-200 self-center text-white border-white"
-                  onClick={handlePreviousClick}
-                >
-                  Previous Page
-                </button>
+              <div className="flex flex-wrap items-center justify-center gap-4 ml-2">
+                {allArticles.map((article) => (
+                  <ArticleCard article={article} key={article.article_id} />
+                ))}
               </div>
-              <div className="flex items-center justify-start gap-4 ml-2 mt-2">
-                {allArticles.slice(5, 10).map((article) => {
-                  return (
-                    <ArticleCard article={article} key={article.article_id} />
-                  );
-                })}
-                <button
-                  className="border-2 w-[150px] h-[100px] rounded-full hover:scale-110 ease-in duration-200 self-center text-white border-white"
-                  onClick={handleNextClick}
-                >
-                  Next Page
-                </button>
-              </div>
+            </div>
+            <div className="flex justify-center mt-4">
+              <button
+                className="border-2 px-6 py-2 rounded-md hover:scale-110 ease-in duration-200 text-white border-white mx-2"
+                onClick={handlePreviousClick}
+                disabled={page === 1} // Disable button if on the first page
+              >
+                Previous Page
+              </button>
+              <button
+                className="border-2 px-6 py-2 rounded-md hover:scale-110 ease-in duration-200 text-white border-white mx-2"
+                onClick={handleNextClick}
+              >
+                Next Page
+              </button>
             </div>
           </div>
         </div>

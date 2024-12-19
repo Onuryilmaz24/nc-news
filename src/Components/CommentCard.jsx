@@ -57,7 +57,7 @@ export const CommentCard = ({ comment, voteUpdater, handleDeleteComment }) => {
   };
 
   return (
-    <div className="bg-gray-100 mx-20 border border-gray-300 rounded-lg p-4 mb-4 shadow-md">
+    <div className="bg-gray-100 mx-1 border border-gray-300 rounded-lg p-4 mb-4 shadow-md">
       <div className="flex justify-between font-semibold text-gray-700 mb-2">
         <span>{comment.body}</span>
         <span className="text-xs text-gray-500">{formattedDate}</span>

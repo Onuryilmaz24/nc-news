@@ -5,7 +5,7 @@
 
 @layer components {
   .home-articles-box {
-    @apply w-11/12 max-h-[400px] p-6 flex flex-col rounded-lg shadow-lg bg-gradient-to-r from-red-500 via-red-600 to-red-700 items-center border-4 border-red-800;
+    @apply w-11/12 h-auto p-6 flex flex-col rounded-lg shadow-lg bg-gradient-to-r from-red-500 via-red-600 to-red-700 items-center border-4 border-red-800;
   }
 
   .article-cards {
@@ -13,15 +13,15 @@
   }
 
   .all-articles-box{
-    @apply w-full mx-8 flex flex-col border-2 p-4 bg-gradient-to-r from-red-500 via-red-600 to-red-700 rounded-lg shadow-md justify-between
+    @apply w-full flex flex-col border-2 p-4 bg-gradient-to-r from-red-500 via-red-600 to-red-700 rounded-lg shadow-md justify-between
   }
 
   .articles-container{
-    @apply flex flex-wrap justify-start gap-4 ml-2 flex-grow
+    @apply flex flex-col gap-4 ml-2 flex-grow h-auto 
   }
 
   .single-article-box {
-    @apply w-full mx-8 border-2 shadow-md
+    @apply w-full mx-8 border-2 shadow-md flex flex-wrap justify-center
   }
 
   .vote-button{
