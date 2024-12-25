@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllTopics } from "./api";
+import { getAllTopics } from "../utils/api";
 import { TopicsCard } from "./TopicsCard";
 import { Link } from "react-router-dom";
 

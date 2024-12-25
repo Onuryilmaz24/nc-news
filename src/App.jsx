@@ -10,6 +10,8 @@ import { LogInPage } from './Components/LogInPage'
 import { UserPage } from './Components/UserPage'
 import { ArticlesByTopic }from './Components/ArticlesByTopic'
 import { TopicsPage }from './Components/TopicsPage'
+import { ErrorPage } from './Components/ErrorPage'
+import { SignUpPage } from './Components/SignUpPage'
 
 function App() {
 
@@ -20,11 +22,13 @@ function App() {
         <Route path='/' element={<HomePage/>}/>
         <Route path='/articles' element={<AllArticles/>}/>
         <Route path='/articles/:article_id' element={<SingleArticle/>}/>
+        <Route path='/signin' element={<SignUpPage/>}/>
         <Route path='/login' element={<LogInPage/>}/>
         <Route path='/:username/userpage' element={<UserPage/>}/>
         <Route path='/topics' element={<TopicsPage/>}/>
         <Route path='/topics/:slug' element={<ArticlesByTopic/>} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path='/404' element={<ErrorPage/>} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
       <Footer />
     </>

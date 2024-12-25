@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllArticles } from "./api";
+import { getAllArticles } from "../utils/api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ArticleCard } from "./ArticleCard";
 import { useNavigate, useParams } from "react-router-dom";
@@ -57,8 +57,7 @@ export const ArticlesByTopic = () => {
       setTopicsArticles(data);
       setLoading(false);
     }).catch((error)=>{
-      alert(`${slug} topic Does Not Exist`)
-      navigate("/topics")
+      navigate("/404")
     });
   }, [page,query,order]);
 

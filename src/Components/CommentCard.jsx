@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { updateCommentsVote } from "./api";
+import { updateCommentsVote } from "../utils/api";
 import { UserContext } from "../Contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { formatter } from "../utils/dateFormat";

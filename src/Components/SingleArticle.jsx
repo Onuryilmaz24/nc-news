@@ -1,16 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  deleteComment,
-  getCommentsOfSingleArticle,
-  getSingleArticle,
-  postNewComment,
-  updateArticleVote,
-} from "./api";
+import { getSingleArticle, updateArticleVote } from "../utils/api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { CommentCard } from "./CommentCard";
 import { UserContext } from "../Contexts/UserContext";
 import { formatter } from "../utils/dateFormat";
+import { CommentsInArticle } from "./CommentsInArticle";
+import { AddComment } from "./AddComment";
 
 export const SingleArticle = () => {
   const [article, setArticle] = useState({});
@@ -19,22 +14,14 @@ export const SingleArticle = () => {
 
   const { user } = useContext(UserContext);
 
-  const [comment, setComment] = useState({
-    username: user.username,
-    body: "",
-  });
-
-  const [comments, setComments] = useState([]);
-
   const { article_id } = useParams();
 
   const [hasUpVoted, setHasUpVoted] = useState(false);
 
   const [hasDownVoted, setHasDownVoted] = useState(false);
 
-  const [order, setOrder] = useState("DESC");
-
-  const [commentPosted, setCommentPosted] = useState(false);
+  const [commentCount,setCommentCount] = useState(0)
+  const [commentUpdated, setCommentUpdated] = useState(false);
 
   const navigate = useNavigate();
 
@@ -43,15 +30,14 @@ export const SingleArticle = () => {
       alert("Please Login In Order To Vote");
       navigate("/login");
     } else {
-      const body = {
-        inc_vote: 1,
-      };
+      const voteChange = hasDownVoted ? 2 : 1;
 
       if (!hasUpVoted) {
-        updateArticleVote(article_id, body).then(() => {
+        updateArticleVote(article_id, { inc_vote: voteChange }).then(() => {
           getSingleArticle(article_id).then((data) => {
             setArticle(data);
             setHasUpVoted(true);
+            setHasDownVoted(false);
           });
         });
       }
@@ -62,101 +48,34 @@ export const SingleArticle = () => {
       alert("Please Login In Order To Vote");
       navigate("/login");
     } else {
-      const body = {
-        inc_vote: -1,
-      };
+      const voteChange = hasUpVoted ? -2 : -1;
 
       if (!hasDownVoted) {
-        updateArticleVote(article_id, body).then(() => {
+        updateArticleVote(article_id, { inc_vote: voteChange }).then(() => {
           getSingleArticle(article_id).then((data) => {
             setArticle(data);
             setHasDownVoted(true);
+            setHasUpVoted(false);
           });
         });
       }
     }
   };
 
-  const updateCommentVotesDisplay = (comment_id, inc_vote) => {
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.comment_id === comment_id
-          ? { ...comment, votes: comment.votes + inc_vote }
-          : comment
-      )
-    );
-  };
+  const handleCommentPost = () => { return setCommentUpdated((prev) => !prev)}
 
   useEffect(() => {
     setLoading(true);
     getSingleArticle(article_id)
       .then((data) => {
         setArticle(data);
+        setCommentCount(data.comment_count)
         setLoading(false);
       })
-      .then(() => {
-        setLoading(true);
-        getCommentsOfSingleArticle(article_id, order).then((data) => {
-          setComments(data);
-          setLoading(false);
-        });
-      })
       .catch((error) => {
-        alert("Article does not exist");
-        navigate("/articles");
+        navigate("/404");
       });
-  }, [article_id, order]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!user.username) {
-      alert("Please Log In");
-      navigate("/login");
-      return;
-    }
-    if (comment.body.trim().length === 0) {
-      alert("Comment can not be empty");
-      return;
-    }
-    setCommentPosted(true);
-    postNewComment(article.article_id, comment)
-      .then((newComment) => {
-        
-        setComments((prevComments) => {
-          return [newComment, ...prevComments];
-        });
-
-        setComment({
-          username: user.username,
-          body: "",
-        });
-      })
-      .catch((error) => {
-        alert("failed to post");
-      }).finally(()=>{
-        setCommentPosted(false)
-      })
-  };
-
-  const handleChange = (e) => {
-    setComment((prevComment) => {
-      return { ...prevComment, body: e.target.value };
-    });
-  };
-
-  const handleDeleteComment = (comment_id) => {
-    deleteComment(comment_id);
-    alert("Your comment has been deleted from article !!");
-    setComments((prevComments) => {
-      return prevComments.filter(
-        (comment) => comment.comment_id !== comment_id
-      );
-    });
-  };
-
-  const handleChangeOrder = (e) => {
-    setOrder(e.target.value);
-  };
+  }, [article_id,commentCount]);
 
   return (
     <>
@@ -187,10 +106,20 @@ export const SingleArticle = () => {
                   </p>
                 </div>
                 <div className="flex justify-end gap-6">
-                  <button className="vote-button" onClick={handleUpVote}>
+                  <button
+                    className={`vote-button ${
+                      hasUpVoted ? "bg-green-500" : "bg-gray-400"
+                    }`}
+                    onClick={handleUpVote}
+                  >
                     Up
                   </button>
-                  <button className="vote-button" onClick={handleDownVote}>
+                  <button
+                    className={`vote-button ${
+                      hasDownVoted ? "bg-red-500" : "bg-gray-400"
+                    }`}
+                    onClick={handleDownVote}
+                  >
                     Down
                   </button>
                 </div>
@@ -212,78 +141,9 @@ export const SingleArticle = () => {
         </div>
       )}
 
-      {user.username ? (
-        <div className="flex justify-center border-2  mx-8 mt-5 h-auto">
-          <label className="w-full flex justify-center shadow-md">
-            <form
-              className="w-full max-w-3xl p-4 "
-              onSubmit={handleSubmit}
-              name="add-comment"
-            >
-              <label className="block text-xl font-semibold mb-2">
-                Your Comment
-              </label>
-              <textarea
-                className="border-2 border-black w-full h-[150px] p-2 resize-none rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Write your comment here..."
-                onChange={handleChange}
-                value={comment.body}
-              />
+      <AddComment article_id={article_id} handleCommentPost={handleCommentPost} />
 
-              <div className="flex justify-end mt-4">
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  disabled={commentPosted}
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </label>
-        </div>
-      ) : null}
-
-      {loading ? (
-        <AiOutlineLoading3Quarters className="animate-spin text-6xl text-blue-500 mx-auto flex flex-col justify-center items-center min-h-[80vh]" />
-      ) : (
-        <div className="flex flex-col justify-center mt-5 border-2 mx-8 shadow-md">
-          <div>
-            <h1 className="text-2xl italic font-bold ml-10 mb-5 mt-2">
-              Comments
-            </h1>
-            <div className="flex mb-4">
-              <label>
-                Display
-                <form id="order-sort">
-                  <label className="" id="order">
-                    Order :
-                    <select
-                      id="sort-queries"
-                      className="ml-4 mr-5"
-                      onChange={handleChangeOrder}
-                      value={order}
-                    >
-                      <option value="DESC">Newest(default)</option>
-                      <option value="ASC">Oldest</option>
-                    </select>
-                  </label>
-                </form>
-              </label>
-            </div>
-          </div>
-          {comments.map((comment) => {
-            return (
-              <CommentCard
-                comment={comment}
-                key={comment.comment_id}
-                voteUpdater={updateCommentVotesDisplay}
-                handleDeleteComment={handleDeleteComment}
-              />
-            );
-          })}
-        </div>
-      )}
+      <CommentsInArticle article_id={article_id} commentUpdated={commentUpdated} />
     </>
   );
 };

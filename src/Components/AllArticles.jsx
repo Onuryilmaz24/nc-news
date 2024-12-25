@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
-import { getAllArticles } from "./api";
+import { getAllArticles } from "../utils/api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ArticleCard } from "./ArticleCard";
+import { useSearchParams } from "react-router-dom";
 
 export const AllArticles = () => {
+
+  const [searchParams,setSearchParams] = useSearchParams();
   const [allArticles, setAllArticles] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
   const [page, setPage] = useState(1);
 
-  const [query, setQuery] = useState("created_at");
+  const [query, setQuery] = useState(searchParams.get("sort_by")||"created_at");
 
-  const [order, setOrder] = useState("DESC");
+  const [order, setOrder] = useState(searchParams.get("order")||"DESC");
+
+  useEffect(() => {
+    if (!searchParams.has("sort_by") || !searchParams.has("order")) {
+      setSearchParams({
+        sort_by: query,
+        order: order,
+      });
+    }
+  }, [searchParams, query, order, setSearchParams]);
 
   const handleNextClick = (e) => {
     e.preventDefault();
@@ -37,10 +49,16 @@ export const AllArticles = () => {
 
   const handleChangeSort = (e) => {
     setQuery(e.target.value);
+    setSearchParams((prevParams)=>{
+      return {...prevParams,sort_by:e.target.value}
+    })
   };
 
   const handleChangeOrder = (e) => {
     setOrder(e.target.value);
+    setSearchParams((prevParams)=>{
+      return {...prevParams,order:e.target.value}
+    })
   };
 
   useEffect(() => {

@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { getAllUsers, getUserInformation } from "./api";
+import { getAllUsers, getUserInformation } from "../utils/api";
 import { UserContext } from "../Contexts/UserContext";
+import { Link } from "react-router-dom";
 
 export const LogInPage = () => {
   const { user, setUser } = useContext(UserContext);
@@ -38,7 +39,7 @@ export const LogInPage = () => {
 
   return (
     <>
-      <section className="flex justify-center items-center min-h-screen bg-gray-100">
+      <section className="flex justify-center items-center min-h-screen bg-gray-100" id="login">
         <div className="bg-white p-8 rounded-lg shadow-lg w-96">
           <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
 
@@ -47,7 +48,7 @@ export const LogInPage = () => {
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="">
+                <label className="" id="login-username">
                   Username
                   <input
                   list="users"
@@ -60,7 +61,7 @@ export const LogInPage = () => {
                 </label>
                 <datalist id="users">
                   {
-                    users.map((user) => <option value={user.username}></option>)
+                    users.map((user) => <option value={user.username} key={user.username}></option>)
                   }
                 </datalist>
               </div>
@@ -70,6 +71,14 @@ export const LogInPage = () => {
               >
                 Log In
               </button>
+              <Link to={"/signin"}>
+                <label className="mt-2">
+                  Don't you have an account ?
+                  <button className="w-full py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Sign In
+                  </button>
+                </label>
+              </Link>
             </form>
           )}
         </div>

@@ -72,3 +72,9 @@ export const getAllUsers = () => {
         return data.users
     })
 }
+
+export const addNewUser = (body) => {
+    return newsApi.post('/users',body).then(({data})=>{
+        return data.user
+    })
+}
