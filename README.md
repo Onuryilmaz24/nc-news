@@ -75,5 +75,13 @@ npm run dev
 4. Open Local Link
 After hosting app in local server ctrl + click to the localhost link and open in your browser.
 
+
+
+---
+
+## Thank you for viewing my project.
+
+### Please visit the hosted version and create test accounts and leave test articles/comments !!!
+
 ---
 "This project was created by [Onur Yilmaz](https://github.com/Onuryilmaz24) as part of the Digital Skills Bootcamp in Software Engineering course provided by [NorthCoders](https://northcoders.com/)."
