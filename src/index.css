@@ -5,15 +5,15 @@
 
 @layer components {
   .home-articles-box {
-    @apply w-11/12 h-auto p-6 flex flex-col rounded-lg shadow-lg bg-gradient-to-r from-red-500 via-red-600 to-red-700 items-center border-4 border-red-800;
+    @apply w-11/12 h-auto p-6 flex flex-col rounded-lg shadow-lg items-center border-4 border-black bg-gradient-to-r from-gray-300 to-gray-700;
   }
 
   .article-cards {
-    @apply w-[300px] h-[300px] flex flex-col justify-between border border-gray-200 rounded-lg shadow-lg bg-white p-4 text-left transition-transform duration-300 ease-in-out hover:scale-105;
+    @apply w-[300px] h-[325px] flex flex-col justify-between border border-gray-200 rounded-lg shadow-lg bg-white p-4 text-left transition-transform duration-300 ease-in-out hover:scale-105;
   }
 
   .all-articles-box{
-    @apply w-full flex flex-col border-2 p-4 bg-gradient-to-r from-red-500 via-red-600 to-red-700 rounded-lg shadow-md justify-between
+    @apply w-full flex flex-col border-4 p-4 bg-gradient-to-r from-gray-300 to-gray-700 rounded-lg shadow-md justify-between mx-8  border-black
   }
 
   .articles-container{
@@ -29,7 +29,12 @@
   }
 
   .topic-cards{
-    @apply w-[300px] h-[300px] flex flex-col justify-between border border-gray-200 rounded-lg shadow-lg bg-white p-4 text-left transition-transform duration-300 ease-in-out hover:scale-105;
+    @apply w-[300px] h-[200px] flex flex-col justify-between border border-gray-200 rounded-lg shadow-lg bg-white p-4 text-center transition-transform duration-300 ease-in-out hover:scale-105;
+  }
+
+  .users-articles-box {
+    @apply w-full max-w-4xl h-auto p-6 flex flex-col rounded-lg shadow-lg border-black bg-gradient-to-r from-gray-300 to-gray-700 items-center border-4 overflow-x-auto;
+    ;
   }
 
 

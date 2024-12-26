@@ -78,3 +78,27 @@ export const addNewUser = (body) => {
         return data.user
     })
 }
+
+export const addNewArticle = (body) => {
+    return newsApi.post('/articles',body).then(({data})=>{
+        return data.article
+    })
+}
+
+export const deleteUser = (username) =>{
+    return newsApi.delete(`/users/${username}`).then(({data})=>{
+        return data
+    })
+} 
+
+export const getUserArticles = (username) => {
+    return newsApi.get(`/users/${username}/articles`).then(({data})=>{
+        return data.articles
+    })
+}
+
+export const deleteArticle = (article_id) => {
+    return newsApi.delete(`/articles/${article_id}`).then(({data})=>{
+        return data
+    })
+}

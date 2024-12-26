@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import { getAllArticles } from "../utils/api";
+import { useContext, useEffect, useState } from "react";
+import { getUserArticles } from "../utils/api";
 import { ArticleCard } from "./ArticleCard";
 import { Link } from "react-router-dom";
+import { UserContext } from "../Contexts/UserContext";
 
-export const HomeArticles = () => {
+export const UserArticles = () => {
   const [articles, setArticles] = useState([]);
 
   const [articlesToShow, setArticlesToShow] = useState(4);
+
+  const {user}  = useContext(UserContext)
 
   const updateArticlesToShow = () => {
     const windowWidth = window.innerWidth;
@@ -21,7 +24,7 @@ export const HomeArticles = () => {
 
   useEffect(() => {
     updateArticlesToShow();
-    getAllArticles(articlesToShow, 1)
+    getUserArticles(user.username)
       .then((data) => {
         setArticles(data);
       })
@@ -36,19 +39,14 @@ export const HomeArticles = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="home-articles-box">
+      <div className="users-articles-box">
         <h1 className="text-white font-extrabold ml-2 p-2 italic text-2xl">
-          Articles
+          {user.username} Articles
         </h1>
-        <div className="flex flex-wrap justify-center items-center gap-10">
+        <div className="flex gap-6 phone:overflow-x-auto overflow-y-auto flex-wrap phone:flex-nowrap ml-96 max-phone:ml-0">
           {articles.map((article) => {
             return <ArticleCard article={article} key={article.article_id} />;
           })}
-          <Link to={"/articles"}>
-            <button className="border-2 text-2xl text-center items-center w-[200px] shadow-md text-white rounded-full hover:scale-110 ease-in duration-200">
-              Explore More
-            </button>
-          </Link>
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ import { ArticlesByTopic }from './Components/ArticlesByTopic'
 import { TopicsPage }from './Components/TopicsPage'
 import { ErrorPage } from './Components/ErrorPage'
 import { SignUpPage } from './Components/SignUpPage'
+import { PostArticlePage } from './Components/PostArticlePage'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path='/topics' element={<TopicsPage/>}/>
         <Route path='/topics/:slug' element={<ArticlesByTopic/>} />
         <Route path='/404' element={<ErrorPage/>} />
+        <Route path='/:username/postarticle' element={<PostArticlePage/>}/>
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
       <Footer />
