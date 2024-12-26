@@ -21,6 +21,8 @@ Key Features:
 
 **Backend Hosted Version :** [Here](https://nc-news-project-w66a.onrender.com/api) 
 
+(note: spin-up period may take couple of minutes )
+
 **Note For Backend Hosted Verison** : For Chrome users, recommend installing a JSON viewer extension to better format the API responses for easier readability.
 
 ---
