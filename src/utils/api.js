@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const newsApi = axios.create({
-    baseURL: "https://nc-news-project-w66a.onrender.com/api"
+    baseURL: "https://nc-news-project-backend.onrender.com/api"
 })
 
 export const getAllArticles = (limit,page,slug,sort,order) => {
